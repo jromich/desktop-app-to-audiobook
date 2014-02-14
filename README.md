@@ -16,7 +16,7 @@ Since it was difficult to spend so much time in front of a PC, I wanted to be ab
 
 ###Note
 
-This code requires that you own the original content and license.  I no longer have a copy and the format of the application has probably changed since this was created (2010).  The code probably most likely won't work with the latest release and should only be used as a reference for similar projects.  Also, I think the changing of the slides in the audiobook only worked on an iphone/ipad, not on android -- at least at that time.
+This code requires that you own the original content and license.  I no longer have a copy and the format of the application has probably changed since this was created (2010).  The code most likely won't work with the latest release and should only be used as a reference for similar projects.  Also, I think the changing of the slides in the audiobook only worked on an iphone/ipad, not on android -- at least at that time.
 
 ###Overview
 
