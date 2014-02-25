@@ -1,4 +1,4 @@
-##CFA L3 Audiobooks
+##Desktop PC App to Audiobooks
 
 This is an R script that was used to convert a desktop windows application to an audiobook.  The application was a study guide for the CFA Level 3 curriculum.  It contained a video of someone talking about each topic and a window with a slideshow that would auto-advance along with the video.
 
