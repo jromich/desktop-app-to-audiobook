@@ -1,11 +1,11 @@
 ################################################################################
-# Create audiobooks from training videos.  Uses the config file timestamps 
+# Create audiobooks from training videos.  Uses the config file timestamps
 # to assign each powerpoint slide to be a 'book cover' per chapter.
 #
-# The end result is an audiobook that contains the audio from the movies and 
+# The end result is an audiobook that contains the audio from the movies and
 # has slides from the application shown as the audiobook chapter book covers.
 #
-# This script requires the R XML package, slideshow assembler, ffmpeg, and 
+# This script requires the R XML package, slideshow assembler, ffmpeg, and
 # convert from imagemagick
 #
 ################################################################################
@@ -22,13 +22,13 @@ kv <- function(key, value, filename){
 
 k <- function(string, filename){
   ## append string to a file
-  cat(string,"\n",sep="",file=filename, append=T)  
+  cat(string,"\n",sep="",file=filename, append=T)
 }
 
 
 writePOD <- function(audiofile, chapterDF, bookname, bookfile){
   ## creates an POD audiobook configuration file used by slideshowassembler
-  
+
   if(file.exists(bookfile)) file.remove(bookfile)
   k("[Podcast]",bookfile)
   kv("altfolder1", ".", bookfile)
@@ -46,7 +46,7 @@ writePOD <- function(audiofile, chapterDF, bookname, bookfile){
     kv("chapter", chapterDF$ChapterName[i], bookfile)
     kv("image", chapterDF$Image[i], bookfile)
   }
-  
+
   k("[metadata]", bookfile)
   kv("\n©nam", bookname, bookfile)
   kv("©ART", "Schweser CFA", bookfile)
@@ -71,22 +71,22 @@ getChapterDF <- function(a){
   ## - name of the chapter
   ## - start/stop timestamp of each slide
   ## - image name and path file for each slide
-  
+
   doc <- xmlInternalTreeParse(a, useInternalNodes = TRUE)
   root <- xmlRoot(doc)
   nodes <- getNodeSet(doc, "//Slide")
   x <- data.frame(do.call(rbind, lapply(nodes, xmlAttrs)), stringsAsFactors=F)
-  x <- x[!duplicated(x$SlideID),]    
-  
+  x <- x[!duplicated(x$SlideID),]
+
   imgName <- lapply(as.numeric(x$SlideID), function(slideid) {paste("slide",slideid+1,".jpg",sep="")})
   imgPath <- unlist(lapply(imgName, function(img) list.files(path=dirname(a),pattern=img,recursive=T, full.names=T)))
   x <- data.frame(Start=x$Time, Image=unlist(imgPath), stringsAsFactors=F)
   b <- readLines(paste(dirname(dirname(a)),"/config.xml",sep=""), warn=F)
   b <- gsub(" & "," and ", b)
-    
+
   configdoc <- xmlInternalTreeParse(b, useInternalNodes = TRUE)
   configroot <- xmlRoot(configdoc)
-  confignodes <- getNodeSet(configroot, "//String[@key='Label']")    
+  confignodes <- getNodeSet(configroot, "//String[@key='Label']")
   label <- unlist( lapply(confignodes, xmlValue))
 
   startTime <- strptime("1/1/01 0:00:00.000", "%d/%m/%y %H:%M:%OS")
@@ -124,16 +124,16 @@ bookfiles <- paste(segmentNames,".POD",sep="")
 
 # assemble audiobook files and pdfs
 for (i in 1:length(filenames)){
-  cat("\n\n******** file:",bookfiles[i],"*********\n\n")  
+  cat("\n\n******** file:",bookfiles[i],"*********\n\n")
   chapterDF <- getChapterDF(xmlfiles[i])
   writePOD(titles[i], chapterDF, segmentNames[i], bookfiles[i])
   x <- paste("\"C:/Program Files/Slideshow Assembler/SSA.exe\" ", bookfiles[i], sep="")
   system(x)
   file.remove(bookfiles[i])
-  
+
   # print pdf version of slides
   x <- paste("C:/cygwin/bin/convert.exe -adjoin -density 100 ", paste(chapterDF$Image, collapse=" "), paste(segmentNames[i], ".pdf",sep=""), sep=" ")
-  system(x)  
+  system(x)
 }
 
 # rename to m4b

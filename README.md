@@ -10,7 +10,7 @@ I ended up creating this script that takes the following steps:
 
 2. scans the XML for timestamped sections of the video and images that match
 
-3. extracts the audio from the flash video files and saves them 
+3. extracts the audio from the flash video files and saves them
 
 4. creates a POD config file for the audiobook assembly
 
@@ -26,5 +26,5 @@ Required:
 
 ###Note
 
-This only works if you already own the content.  I no longer have the source files and the format of the application may have changed since this was created (2010 level 3 version).  
+This only works if you already own the content.  I no longer have the source files and the format of the application may have changed since this was created (2010 level 3 version).
 
